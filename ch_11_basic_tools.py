@@ -1,6 +1,5 @@
 import os
 import streamlit as st
-from langchain.chat_models import ChatOpenAI
 from langchain.agents import AgentExecutor, load_tools
 from langchain.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain.tools.render import format_tool_to_openai_function
@@ -8,13 +7,14 @@ from langchain.agents.format_scratchpad import format_to_openai_functions
 from langchain.agents.output_parsers import OpenAIFunctionsAgentOutputParser
 from langchain.utilities import OpenWeatherMapAPIWrapper
 
-os.environ ["OPENAI_API_KEY"] = "<YOUR API KEY>"
+from langchain_experimental.llms.ollama_functions import OllamaFunctions
 
-# Initializing model with temperature
-model = ChatOpenAI(temperature=0)
+
+model = OllamaFunctions(model="zephyr:7b-beta-q4_K_M", temperature=0)
 
 # Setting OpenWeatherMap API key as an environment variable
-os.environ["OPENWEATHERMAP_API_KEY"] = "<YOUR API KEY>"
+os.environ["OPENWEATHERMAP_API_KEY"] = "YOUR_API_KEY"
+"
 
 # Initializing OpenWeatherMapAPIWrapper
 weather = OpenWeatherMapAPIWrapper()

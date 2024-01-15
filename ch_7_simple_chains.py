@@ -1,13 +1,15 @@
 import os
 import streamlit as st
-from langchain import OpenAI
 from langchain.prompts import PromptTemplate
 from langchain.schema import StrOutputParser
+from langchain_community.chat_models import ChatOllama
 
-os.environ ["OPENAI_API_KEY"] = "<YOUR API KEY>"
+chat_model = ChatOllama(
+    model="zephyr:7b-beta-q4_K_M",
+)
 
 # Initializing the OpenAI model
-model = OpenAI()
+model = chat_model
 
 # Setting up a Streamlit web app title
 st.title("Story Creator")

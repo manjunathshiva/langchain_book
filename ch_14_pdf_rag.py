@@ -1,17 +1,20 @@
 import os
 import chainlit as cl
-from langchain.embeddings import OpenAIEmbeddings
-from langchain.chat_models import ChatOpenAI
+from langchain_community.embeddings import HuggingFaceEmbeddings
 from langchain.prompts import ChatPromptTemplate
 from langchain.schema import StrOutputParser
-from langchain.document_loaders import PyPDFLoader
+from langchain_community.document_loaders import PyPDFLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.vectorstores.chroma import Chroma
 from langchain.schema.runnable import Runnable, RunnablePassthrough, RunnableConfig
 
-os.environ ["OPENAI_API_KEY"] = "<YOUR API KEY>"
+from langchain_community.chat_models import ChatOllama
 
-model = ChatOpenAI(streaming=True)
+chat_model = ChatOllama(
+    model="zephyr:7b-beta-q4_K_M",
+)
+
+model = chat_model
 
 text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=100)
 
@@ -49,7 +52,9 @@ async def on_chat_start():
     documents = pdf_loader.load_and_split(text_splitter=text_splitter)
 
     # Creating embeddings for the documents
-    embeddings = OpenAIEmbeddings()
+    embeddings = HuggingFaceEmbeddings(model_name='/Volumes/FastSSD2/LLM/AIAnytime/manju/Llama2-Medical-Chatbot/models/BAAI_bge-base-en-v1.5',
+                                       model_kwargs={'device': 'cpu'},
+                                       multi_process=True)
     doc_search = await cl.make_async(Chroma.from_documents)(documents, embeddings)
 
     # Inform the user about readiness

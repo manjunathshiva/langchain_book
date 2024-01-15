@@ -1,6 +1,5 @@
 import os
 import streamlit as st
-from langchain.chat_models import ChatOpenAI
 from langchain.agents import AgentExecutor
 from langchain.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain.tools.render import format_tool_to_openai_function
@@ -9,11 +8,12 @@ from langchain.agents.output_parsers import OpenAIFunctionsAgentOutputParser
 from langchain.memory import ConversationBufferMemory
 import requests
 from langchain.agents import Tool
+from langchain_experimental.llms.ollama_functions import OllamaFunctions
 
-os.environ ["OPENAI_API_KEY"] = "<YOUR API KEY>"
 
-# Initializing model with temperature
-model = ChatOpenAI(model="gpt-4", temperature=0)
+model = OllamaFunctions(model="zephyr:7b-beta-q4_K_M", temperature=0)
+
+
 
 st.title("🍽️ Chefbot")
 
